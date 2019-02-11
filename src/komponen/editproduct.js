@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default class Editproduct extends Component {
     constructor () {
@@ -9,6 +9,9 @@ export default class Editproduct extends Component {
             product_id: '',
             product_name: '',
             product_img1: '',
+            product_img2: 'img2',
+            product_img3: 'img3',
+            product_img4: 'img4',
             product_description: '',
             material_description: '',
             product_design: '',
@@ -22,18 +25,12 @@ export default class Editproduct extends Component {
             id: '',
         }
         this.handleChange =this.handleChange.bind(this)
+        this.handleselectedFile =this.handleselectedFile.bind(this)
     }
     
-    handleChange(e){
-        this.setState({
-        [e.target.name]: e.target.value
-        })
-    }
-
     componentDidMount() {
         console.log(this.props)
         let product = this.props.match.params.id
-        // console.log(product)
         let url = `http://localhost:3320/products/${product}`
         axios.get(url)
             .then((info) => {
@@ -42,6 +39,9 @@ export default class Editproduct extends Component {
                     product_id: info.data[0].product_id,
                     product_name: info.data[0].product_name,
                     product_img1: info.data[0].product_img1,
+                    product_img2: info.data[0].product_img2,
+                    product_img3: info.data[0].product_img3,
+                    product_img4: info.data[0].product_img4,
                     product_description: info.data[0].product_description,
                     material_description: info.data[0].material_description,
                     product_design: info.data[0].product_design,
@@ -60,22 +60,39 @@ export default class Editproduct extends Component {
             })
         }
 
-    editProduct = () => {
-        let url = `http://localhost:3320/edit/${this.state.product_id}`
-        axios.put(url, {
-            product_name: this.state.product_name,
-            product_img1: this.state.product_img1,
-            product_description: this.state.product_description,
-            material_description: this.state.material_description,
-            product_design: this.state.product_design,
-            size: this.state.size,
-            dimension: this.state.dimension,
-            color: this.state.color,
-            stock: this.state.stock,
-            price: this.state.price,
-            category_id: this.state.category_id,
-            product_category_id: this.state.product_category_id
+    handleChange = (e) => {
+        this.setState({
+        [e.target.name]: e.target.value
         })
+    }
+
+    handleselectedFile = (e) => {
+        this.setState({
+            [e.target.name]: e.target.files[0]
+        })
+        console.log(e.target.files[0])
+    }
+
+    editProduct = () => {
+        let productDataEdited = new FormData()
+        productDataEdited.append('product_name', this.state.product_name)
+        productDataEdited.append('product_img1', this.state.product_img1,this.state.product_img1.name)
+        productDataEdited.append('product_img2', this.state.product_img2,this.state.product_img2.name)
+        productDataEdited.append('product_img3', this.state.product_img3,this.state.product_img3.nama)
+        productDataEdited.append('product_img4', this.state.product_img4,this.state.product_img4.nama)
+        productDataEdited.append('product_description', this.state.product_description)
+        productDataEdited.append('material_description', this.state.material_description)
+        productDataEdited.append('product_design', this.state.product_design)
+        productDataEdited.append('size', this.state.size)
+        productDataEdited.append('dimension', this.state.dimension)
+        productDataEdited.append('color', this.state.color)
+        productDataEdited.append('stock', this.state.stock)
+        productDataEdited.append('price', this.state.price)
+        productDataEdited.append('category_id', this.state.category_id)
+        productDataEdited.append('product_category_id', this.state.product_category_id)
+        console.log(productDataEdited)
+        let url = `http://localhost:3320/edit/${this.state.product_id}`
+        axios.put(url, productDataEdited)
         .then((info)=>{
             console.log(info)
         })
@@ -98,58 +115,73 @@ export default class Editproduct extends Component {
     render() {
         return (
             <div className="col-xl-8">
-                <form>
-                    <div className="form-group">
+                <form onSubmit={(e)=>{e.preventDefault()}} encType="multipart/form-data">
+                <div className="form-group">
                         <label htmlFor="Product_name">Product Name</label>
-                    <input value={this.state.product_name} type="text" className="form-control" name="product_name" onChange={(e)=>{this.setState({product_name: e.target.value})}}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="Product_img1">Product Image</label>
-                        <input value={this.state.product_img1} type="text" className="form-control" name="product_img1" onChange={(e)=>{this.setState({product_img1: e.target.value})}}/>
+                        <input value={this.state.product_name || ''} type="text" className="form-control" name="product_name" onChange={(e) => { this.setState({ product_name: e.target.value }) }} />
+                    {/* value={this.state.product_name || ''} agar tidak terjadi error yang menyebabkan  */}
                     </div>
                     <div className="form-group">
                         <label htmlFor="Product_description">Product Description</label>
-                        <textarea value={this.state.product_description} rows="6" type="text" className="form-control" name="product_description" onChange={(e)=>{this.setState({product_description: e.target.value})}}/>
+                        <textarea value={this.state.product_description || ''} rows="6" type="text" className="form-control" name="product_description" onChange={(e) => { this.setState({ product_description: e.target.value }) }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Material_description">Material Description</label>
-                        <textarea value={this.state.material_description} rows="4" type="text" className="form-control" name="material_description" onChange={(e)=>{this.setState({material_description: e.target.value})}}/>
+                        <textarea value={this.state.material_description || ''} rows="4" type="text" className="form-control" name="material_description" onChange={(e) => { this.setState({ material_description: e.target.value }) }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Product_design">Product Design</label>
-                        <textarea value={this.state.product_design} rows="4" type="text" className="form-control" name="product_design" onChange={(e)=>{this.setState({product_design: e.target.value})}}/>
-                    </div> 
+                        <textarea value={this.state.product_design || ''} rows="4" type="text" className="form-control" name="product_design" onChange={(e) => { this.setState({ product_design: e.target.value }) }} />
+                    </div>
                     <div className="form-group">
                         <label htmlFor="Size">Size</label>
-                        <input value={this.state.size} type="text" className="form-control" name="size" onChange={(e)=>{this.setState({size: e.target.value})}}/>
+                        <input value={this.state.size || ''} type="text" className="form-control" name="size" onChange={(e) => { this.setState({ size: e.target.value }) }} />
                         <small className="form-text text-muted">input "-" if there is no size</small>
                     </div>
                     <div className="form-group">
                         <label htmlFor="Dimension">Dimension</label>
-                        <input value={this.state.dimension} type="text" className="form-control" name="dimension" onChange={(e)=>{this.setState({dimension: e.target.value})}}/>
+                        <input value={this.state.dimension || ''} type="text" className="form-control" name="dimension" onChange={(e) => { this.setState({ dimension: e.target.value }) }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Color">Color</label>
-                        <input value={this.state.color} type="text" className="form-control" name="color" onChange={(e)=>{this.setState({color: e.target.value})}}/>
+                        <input value={this.state.color || ''} type="text" className="form-control" name="color" onChange={(e) => { this.setState({ color: e.target.value }) }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Stock">Stock</label>
-                        <input value={this.state.stock}type="text" className="form-control" name="stock" onChange={(e)=>{this.setState({stock: e.target.value})}}/>
+                        <input value={this.state.stock || ''} type="text" className="form-control" name="stock" onChange={(e) => { this.setState({ stock: e.target.value }) }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Price">Price</label>
-                        <input value={this.state.price} type="text" className="form-control" name="price" onChange={(e)=>{this.setState({price: e.target.value})}}/>
+                        <input value={this.state.price || ''} type="text" className="form-control" name="price" onChange={(e) => { this.setState({ price: e.target.value }) }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Category_id">Category ID</label>
-                        <input value={this.state.category_id} type="text" className="form-control" name="category_id" onChange={(e)=>{this.setState({category_id: e.target.value})}}/>
+                        <input value={this.state.category_id || ''} type="text" className="form-control" name="category_id" onChange={(e) => { this.setState({ category_id: e.target.value }) }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Product_category_id">Product Category ID</label>
-                        <input value={this.state.product_category_id} type="text" className="form-control" name="product_category_id" onChange={(e)=>{this.setState({product_category_id: e.target.value})}}/>
+                        <input value={this.state.product_category_id || ''} type="text" className="form-control" name="product_category_id" onChange={(e) => { this.setState({ product_category_id: e.target.value }) }} />
                     </div>
+                    <br/>
+                    <div className="input-field">
+                        <input value={this.product_img1} type="file" name="product_img1" onChange={this.handleselectedFile}/>
+                        <label htmlFor="product_img1">{this.product_img1}</label>
+                    </div>
+                    <br/>
+                    <div className="input-field">
+                        <input value={this.product_img1} type="file" name="product_img2" onChange={this.handleselectedFile}/>
+                    </div>
+                    <br/>
+                    <div className="input-field">
+                        <input value={this.product_img3} type="file" name="product_img3" onChange={this.handleselectedFile}/>
+                    </div>
+                    <br/>
+                    <div className="input-field">
+                        <input value={this.product_img4} type="file" name="product_img4" onChange={this.handleselectedFile}/>
+                    </div>
+                    <br/>
                     <div className="form-group">
-                        <button type="submit" onClick={this.editProduct} className="btn btn-outline-success">EDIT PRODUCT!</button>
+                        <Link to="/" refresh="true"><button type="submit" onClick={this.editProduct} className="btn btn-outline-success">EDIT PRODUCT!</button></Link>
                         <button type="submit" onClick={this.deleteProduct} className="btn btn-outline-danger">DELETE PRODUCT!</button>
                     </div>
                 </form>

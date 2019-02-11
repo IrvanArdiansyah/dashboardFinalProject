@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
-// import Producttbl from './subkomponen/producttbl'
 
 export default class Producttable extends Component {
     constructor() {
@@ -31,14 +30,7 @@ export default class Producttable extends Component {
             let img1 = val.product_img1;
             let price = val.price;
             let product_description = val.product_description;
-            // let material_description = val.material_description;
-            // let product_design = val.product_design;
-            // let dimension = val.dimension;
-            // let size = val.size;
-            // let color = val.color;
             let stock = val.stock;
-            let category = val.category_id;
-            let prod_category = val.product_category_id;
             return (
                 <tbody key={i}>
                     <tr>
@@ -46,7 +38,7 @@ export default class Producttable extends Component {
                         <td>{product_name}</td>
                         <td>{product_description}</td>
                         <td>{stock}</td>
-                        <td><img alt="1" src={`http://localhost:3320/Assets/Img/${category}/${prod_category}/${img1}`} style={{ height: "75px", width: "75px" }}></img></td>
+                        <td><img alt="1" src={img1} style={{ height: "75px", width: "75px" }}></img></td>
                         <td>Rp.{price}</td>
                         <td><Link to={`/edit/${product_id}`}><button className="btn btn-primary">Edit</button></Link></td>
                     </tr>

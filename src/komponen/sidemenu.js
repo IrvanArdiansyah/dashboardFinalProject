@@ -15,6 +15,15 @@ export default class Sidemenu extends Component {
                                 <li className="nav-item">
                                     <Link to="/Addproduct" className="nav-link pl-0"><i className="fa fa-heart-o fa-fw"></i> <span className="d-none d-md-inline">Add Product</span></Link>
                                 </li>
+                                <li className="nav-item">
+                                    <Link to="/Addproduct2" className="nav-link pl-0"><i className="fa fa-heart-o fa-fw"></i> <span className="d-none d-md-inline">Add Product 2</span></Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/pdf" className="nav-link pl-0"><i className="fa fa-heart-o fa-fw"></i> <span className="d-none d-md-inline">PDF</span></Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/filepond" className="nav-link pl-0"><i className="fa fa-heart-o fa-fw"></i> <span className="d-none d-md-inline">Filepond</span></Link>
+                                </li>
                                 {/* <li className="nav-item">
                                     <a className="nav-link pl-0" href="1"><i className="fa fa-book fa-fw"></i> <span className="d-none d-md-inline">Link</span></a>
                                 </li>

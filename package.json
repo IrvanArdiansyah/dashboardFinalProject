@@ -4,8 +4,13 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "filepond": "^3.8.0",
+    "filepond-plugin-image-exif-orientation": "^1.0.3",
+    "filepond-plugin-image-preview": "^3.1.6",
+    "jspdf": "^1.5.3",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-filepond": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.3"
   },
