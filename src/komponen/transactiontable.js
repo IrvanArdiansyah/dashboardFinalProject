@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
-export default class Producttable extends Component {
+export default class Transactiontbl extends Component {
     constructor() {
         super()
         this.state = {
-            products: []
+            transactions: []
         }
     }
 
     componentDidMount() {
-        let url = 'http://localhost:3320/products'
+        let url = 'http://localhost:3320/transactions'
         axios.get(url)
             .then((info) => {
                 console.log(info.data)
                 this.setState({
-                    products: info.data
+                    transactions: info.data
                 })
             })
             .catch((err) => {
@@ -24,26 +24,24 @@ export default class Producttable extends Component {
             })
     }
     render() {
-        let products_tbl = this.state.products.map((val, i) => {
-            let product_id = val.product_id;
-            let product_name = val.product_name;
-            let img1 = val.product_img1;
-            let price = val.price;
-            let product_description = val.product_description;
-            let stock = val.stock;
+        let products_tbl = this.state.transactions.map((val, i) => {
+            let transaction_id = val.transaction_id;
+            let product = val.products;
+            let transfer_slip = val.transfer_slip;
+            let quantitiy = val.quantity;
+            let total_price = val.total_price;
             return (
                 <tbody key={i}>
                     <tr>
-                        <th scope="row">{product_id}</th>
-                        <td>{product_name}</td>
-                        <td>{product_description}</td>
-                        <td>{stock}</td>
-                        <td><img alt="1" src={img1} style={{ height: "75px", width: "75px" }}></img></td>
-                        <td>Rp.{price.toLocaleString()}</td>
-                        <td><Link to={`/edit/${product_id}`}><button className="btn btn-primary">Edit</button></Link></td>
+                        <th scope="row">{transaction_id}</th>
+                        <td>{product}</td>
+                        <td>{quantitiy}</td>
+                        <td>{total_price.toLocaleString()}</td>
+                        <td><img alt="1" src={transfer_slip} style={{width: '200px', height: '200px'}}></img></td>
+                        <td><button onClick={(e)=>{}} className="btn btn-primary">Approve</button></td>
                     </tr>
                 </tbody>
-            )
+                )
         })
         return (
             <React.Fragment>
